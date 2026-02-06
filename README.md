@@ -1,74 +1,136 @@
-# Data Science Project Boilerplate
+# Cats & Dogs Classifier 🐱🐶
 
-This boilerplate is designed to kickstart data science projects by providing a basic setup for database connections, data processing, and machine learning model development. It includes a structured folder organization for your datasets and a set of pre-defined Python packages necessary for most data science tasks.
+A web application that uses machine learning to classify images as cats or dogs. Built with Flask and TensorFlow Lite, deployed on Render for easy access.
 
-## To use this model deploy
-Please visit
+## 🎯 Features
 
-https://iagorivadulla-flask-cats-dogs.onrender.com/
+- **Image Classification**: Upload an image and get instant predictions (Cat or Dog)
+- **AI-Powered**: Uses a pre-trained TensorFlow Lite model from Hugging Face
+- **User-Friendly Web Interface**: Simple and intuitive UI built with HTML/CSS
+- **Fast Inference**: Optimized TFLite model for quick predictions
+- **Confidence Score**: Displays the prediction confidence level
 
-## Structure
+## 🚀 Live Demo
 
-The project is organized as follows:
+Try the application online: https://iagorivadulla-flask-cats-dogs.onrender.com/
 
-- **`src/app.py`** → Main Python script where your project will run.
-- **`src/explore.ipynb`** → Notebook for exploration and testing. Once exploration is complete, migrate the clean code to `app.py`.
-- **`src/utils.py`** → Auxiliary functions, such as database connection.
-- **`requirements.txt`** → List of required Python packages.
-- **`models/`** → Will contain your SQLAlchemy model classes.
-- **`data/`** → Stores datasets at different stages:
-  - **`data/raw/`** → Raw data.
-  - **`data/interim/`** → Temporarily transformed data.
-  - **`data/processed/`** → Data ready for analysis.
+## 📁 Project Structure
 
-
-## ⚡ Initial Setup in Codespaces (Recommended)
-
-No manual setup is required, as **Codespaces is automatically configured** with the predefined files created by the academy for you. Just follow these steps:
-
-1. **Wait for the environment to configure automatically**.
-   - All necessary packages and the database will install themselves.
-   - The automatically created `username` and `db_name` are in the **`.env`** file at the root of the project.
-2. **Once Codespaces is ready, you can start working immediately**.
-
-
-## 💻 Local Setup (Only if you can't use Codespaces)
-
-**Prerequisites**
-
-Make sure you have Python 3.11+ installed on your machine. You will also need pip to install the Python packages.
-
-**Installation**
-
-Clone the project repository to your local machine.
-
-Navigate to the project directory and install the required Python packages:
-
-```bash
-pip install -r requirements.txt
+```
+.
+├── src/
+│   ├── app.py              # Flask application & routes
+│   ├── utils.py            # Helper functions
+│   ├── explore.ipynb       # Notebook for experimentation
+│   └── templates/
+│       └── index.html      # Web interface
+├── data/
+│   ├── raw/                # Raw datasets
+│   ├── interim/            # Intermediate processed data
+│   └── processed/          # Final processed data
+├── models/                 # Model storage
+├── requirements.txt        # Python dependencies
+└── Procfile               # Deployment configuration
 ```
 
-**Create a database (if necessary)**
+## 🛠️ Tech Stack
 
-Create a new database within the Postgres engine by customizing and executing the following command:
+- **Flask** - Web framework
+- **TensorFlow Lite** - Machine learning inference
+- **Hugging Face Hub** - Model hosting
+- **Pillow** - Image processing
+- **NumPy** - Numerical computations
+## ⚡ Quick Start
 
-```bash
-$ psql -U postgres -c "DO \$\$ BEGIN 
-    CREATE USER my_user WITH PASSWORD 'my_password'; 
-    CREATE DATABASE my_database OWNER my_user; 
-END \$\$;"
+### Prerequisites
+- Python 3.11 or higher
+- pip (Python package manager)
+
+### Local Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd flask-cats-dogs-classifier
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the Flask application**
+   ```bash
+   python src/app.py
+   ```
+
+4. **Open your browser** and navigate to:
+   ```
+   http://localhost:5000
+   ```
+
+## 💻 Usage
+
+1. **Access the web interface** - Open the application in your browser
+2. **Upload an image** - Click to select or drag a cat or dog image
+3. **Get prediction** - The model will classify the image and show:
+   - The predicted class (Cat or Dog)
+   - Confidence percentage
+
+## 🔧 How It Works
+
+1. **Image Upload** - User selects an image from their device
+2. **Preprocessing** - Image is resized to 200x200 pixels and normalized
+3. **Model Inference** - TensorFlow Lite model processes the image
+4. **Prediction** - Returns the class with highest confidence score
+5. **Display Result** - Shows prediction and confidence to the user
+
+## 📦 Dependencies
+
+See `requirements.txt` for the complete list:
+- Flask 3.1.0
+- TFLite Runtime 2.14.0
+- Hugging Face Hub 0.24.6
+- NumPy 1.26.4
+- Pillow
+
+## 🤖 Model Information
+
+- **Framework**: TensorFlow Lite (optimized for inference)
+- **Input Size**: 200x200 RGB images
+- **Output**: Binary classification (Cat or Dog)
+- **Model Source**: [Hugging Face - jamirc/cat_dog_classifier](https://huggingface.co/jamirc/cat_dog_classifier)
+- **Advantages**: Fast inference, small file size, perfect for web deployment
+
+## 🚀 Deployment
+
+This project is configured for deployment on Render with the included `Procfile`. To deploy your own version:
+
+1. Connect your GitHub repository to Render
+2. Render will automatically install dependencies from `requirements.txt`
+3. The application will start using the Procfile configuration
+4. Your app will be live at a unique Render URL
+
+## 📝 API Endpoints
+
+### GET /
+Returns the main web interface (HTML page)
+
+### POST /predict
+Accepts an image file and returns a JSON response with prediction
+
+**Request**: 
+- Method: POST
+- Content-Type: multipart/form-data
+- Parameter: `file` (image file)
+
+**Response**:
+```json
+{
+  "class": "Cat",
+  "confidence": 0.95
+}
 ```
-Connect to the Postgres engine to use your database, manipulate tables, and data:
-
-```bash
-$ psql -U my_user -d my_database
-```
-
-Once inside PSQL, you can create tables, run queries, insert, update, or delete data, and much more!
-
-**Environment Variables**
-
-Create a .env file in the root directory of the project to store your environment variables, such as your database connection string:
 
 ```makefile
 DATABASE_URL="postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DB_NAME>"
